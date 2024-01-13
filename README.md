@@ -2,18 +2,14 @@
 
 ### Documents
 
-setSource(string) - main, draft
+setColumn(string) - Select column to work with.
 
-setColumn(string) - (main) หมวด, ส่วน, มาตรา, บทบัญญัติ
+filter(string) - Selected filtered rows by exact value.
 
-setColumn(string) - (draft) หมวด, ส่วน, มาตรา, ร่างมาตรา, ร่างบทบัญญัติ, ประเด็นการพิจารณา, มติที่ประชุม, หมายเหตุ, *ผู้อภิปราย, ประชุมครั้งที่, วันที่, หน้า
+filterOut(string) - Remove filtered rows by exact value.
 
-filter(string) - Filter rows by column value. (Exact search)
+search(string) - Partial search and order by ranking.
 
-search(string) - Search and order by ranking. (Partial search)
+filterArray(string) - Filter rows which have seach value in array item.
 
-filterArray(string) - Fields with * are containing array. Use this one to filter it.
-
-### TODO:
-
-Check array for filter and search to prevent error.
+sort(isDecrement) - Sort data by using selected column.
