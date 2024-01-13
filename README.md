@@ -1,4 +1,5 @@
 # กรธ.60 - Data Query
+
 ### Documents
 
 setSource(string) - main, draft
@@ -12,3 +13,7 @@ filter(string) - Filter rows by column value. (Exact search)
 search(string) - Search and order by ranking. (Partial search)
 
 filterArray(string) - Fields with * are containing array. Use this one to filter it.
+
+### TODO:
+
+Check array for filter and search to prevent error.
