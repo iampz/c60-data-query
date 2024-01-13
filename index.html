@@ -1,0 +1,39 @@
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<title>กรธ.60 - Data Query</title>
+<meta name="description" content="หน้าจอดึงข้อมูลกรธ.60" />
+<link href="main.css?v=0.0.1" rel="stylesheet" />
+</head>
+<body>
+
+<main>
+  <header>
+    <h1>กรธ.60 - Data Query</h1>
+  </header>
+  <section id="app-section">
+    <h3>Query Editor</h3>
+    <p>Sample query [ <a id="query-main" href="#main">รธน.60</a> | <a id="query-draft" href="#draft">กรธ.60</a> ]</p>
+<textarea id="query-editor">
+$debug = createDataObject($data);
+
+$debug
+  .setSource('main')
+  .setColumn('บทบัญญัติ')
+  .search('พระบรมราชโองการ ประชุมลับ งบประมาณ')
+  .render($dataSection);
+</textarea>
+    <textarea id="query-result"></textarea>
+    <button id="query-submit">Query</button>
+  </section>
+  <section id="data-section"></section>
+  <aside>
+    <p><button id="btt">Back to top</button></p>
+  </aside>
+</main>
+
+<script src="data.js?v=0.0.1"></script>
+<script src="app.js?v=0.0.1"></script>
+
+</body>
+</html>

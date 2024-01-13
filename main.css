@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+body {
+  font-family: Sarabun, Arial, sans-serif;
+  font-size: 14px;
+  height: 100%;
+}
+
+th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+  
+aside {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+#query-editor, #query-result {
+  width: 49%;
+  height: 150px;
+}
+
+#data-section {
+  margin-top: 20px;
+  padding-bottom: 60px;
+}
+  
+#data-table {
+  width: 100%;
+}
+  #data-table th {
+    background: #444;
+    color: #ddd;
+    font-size: 14px;
+  }
+  #data-table tbody tr:nth-child(even) {
+    background: #eee;
+  }
+  #data-table td {
+    padding: 10px 8px;
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+  }
+  #data-table p {
+    margin: 0;
+    line-height: 1.8em;
+    text-indent: 3em;
+  }
+  #data-table p+p {
+    margin-top: 8px;
+  }  
+  #data-table ul {
+    margin: 0 0 0 1em;
+    padding: 0;
+  }
