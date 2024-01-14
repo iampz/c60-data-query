@@ -2,8 +2,6 @@ import { column, data } from './data.js';
 import createDataObject from './data-object.js';
 
 var $dataObj;
-const ASC = false;
-const DESC = true; 
 
 (function init(param) {
   
@@ -11,8 +9,8 @@ const DESC = true;
     'query-main':
 `createDataObject(column.main, data.main)
   .sort({
-    หมวด: DESC,
-    มาตรา: ASC
+    หมวด: 'DESC',
+    มาตรา: 'ASC'
   })
   .render(
     'data-section',

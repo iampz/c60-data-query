@@ -96,7 +96,9 @@ function DataObject(column=[], data=[]) {
     this.data = this.data.sort((a, b) => {
       return columnsArr.reduce((position, columnArr) => {
         const [columnName, columnIndex] = columnArr;
-        const isDESC = columnsObj[columnName];
+        const isDESC =
+          (columnsObj[columnName].toUpperCase() === 'DESC')
+          ? true : false;
         return position || (isDESC)
           ? b[columnIndex] - a[columnIndex]
           : a[columnIndex] - b[columnIndex];
