@@ -3,7 +3,7 @@
 <meta charset="utf-8" />
 <title>กรธ.60 - Data Query</title>
 <meta name="description" content="หน้าจอดึงข้อมูลกรธ.60" />
-<link href="main.css?v=0.0.1" rel="stylesheet" />
+<link href="main.css?v=0.0.2" rel="stylesheet" />
 </head>
 <body>
 
@@ -13,12 +13,11 @@
   </header>
   <section id="app-section">
     <h3>Query Editor</h3>
-    <p>Sample query [ <a id="query-main" href="#main">รธน.60</a> | <a id="query-draft" href="#draft">กรธ.60</a> ]</p>
+    <p>Sample query - [ <a id="query-main" href="#main">รธน.60</a> | <a id="query-draft" href="#draft">กรธ.60</a> ]</p>
 <textarea id="query-editor">
-$debug = createDataObject($data);
+$dataObj = createDataObject($column.main, $data.main);
 
-$debug
-  .setSource('main')
+$dataObj
   .setColumn('บทบัญญัติ')
   .search('พระบรมราชโองการ ประชุมลับ งบประมาณ')
   .render($dataSection);
@@ -32,8 +31,9 @@ $debug
   </aside>
 </main>
 
-<script src="data.js?v=0.0.1"></script>
-<script src="app.js?v=0.0.1"></script>
+<script type="module" src="data.js?v=0.0.2"></script>
+<script type="module" src="data-object.js?v=0.0.2"></script>
+<script type="module" src="app.js?v=0.0.2"></script>
 
 </body>
 </html>
