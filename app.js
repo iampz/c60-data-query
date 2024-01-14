@@ -1,30 +1,39 @@
-import { $column, $data } from './data.js';
+import { column, data } from './data.js';
 import createDataObject from './data-object.js';
 
 var $dataObj;
-const $dataSection = document.getElementById('data-section');
+const ASC = false;
+const DESC = true; 
 
 (function init(param) {
   
   const code = {
     'query-main':
-`$dataObj = createDataObject($column.main, $data.main);
-
-$dataObj
-  .setColumn('บทบัญญัติ')
-  .search('พระบรมราชโองการ ประชุมลับ งบประมาณ')
-  .render($dataSection);`
+`createDataObject(column.main, data.main)
+  .sort({
+    หมวด: DESC,
+    มาตรา: ASC
+  })
+  .render(
+    'data-section',
+    { id: 'data-table', border: 1 }
+  );
+  `
   , 'query-draft':
-`$dataObj = createDataObject($column.draft, $data.draft);
-
-$dataObj
-  .setColumn('ผู้อภิปราย')
-  .filterArray('นายมีชัย ฤชุพันธุ์')
-  .render($dataSection);`
+`createDataObject(column.draft, data.draft)
+  .search('ประเด็นการพิจารณา', 'ศาลรัฐธรรมนูญ นิติธรรม รัฐสภา')
+  .render(
+    'data-section',
+    { id: 'data-table', border: 1 }
+  );
+  `
   };
 
   addEventListener('load', evt => {
   
+    const editor = document.getElementById('query-editor');
+    const querySubmit = document.getElementById('query-submit');
+
     // sample query
     ['query-main', 'query-draft'].forEach(id => {
       document
@@ -32,23 +41,21 @@ $dataObj
         .addEventListener('click', evt => {
           evt.stopPropagation();
           evt.preventDefault();
-          const input = document.getElementById('query-editor');
-          input.value = code[id];
+          editor.value = code[id];
           document.getElementById('query-submit').click();
           return evt;
       });
     });
     
     // run query
-    document
-      .getElementById('query-submit')
-      .addEventListener('click', evt => {
-        const input = document.getElementById('query-editor');
-        const output = document.getElementById('query-result');
-        const code = input.value;
-        eval(code);
-        output.value = JSON.stringify($dataObj.data);
-        return evt;
+    querySubmit.addEventListener('click', evt => {
+      const result = document.getElementById('query-result');
+      const code = `$dataObj = ${editor.value}`;
+      eval(code);
+      result.value = JSON.stringify($dataObj.data);
+      editor.focus();
+      editor.selectionStart = editor.value.length;
+      return evt;
     });
     
     // back to top
@@ -63,8 +70,11 @@ $dataObj
         return evt;
     });
   
+    querySubmit.click();
     return evt;
+
   });
   
   return true;
+
 })({});

@@ -1,7 +1,7 @@
 function DataObject(column=[], data=[]) {
   if ( !Array.isArray(column)
     || !Array.isArray(data)
-  ) throw Error('Column and Data should be array.');
+  ) throw new TypeError('Column and Data should be array.');
   this.column = column;
   this.data = data;
 }
@@ -13,100 +13,104 @@ function DataObject(column=[], data=[]) {
     });
   };
 
-  DataObject.prototype.require = function(prop) {
-    const errorList = {
-      columnName: 'column'
-    , columnIndex: 'column'
-    };
-    const val = this[prop];
-    if (!val) throw new Error(
-      `Set ${errorList[prop]} before using this function.`
-    );
-    return this;
-  }
-
-  DataObject.prototype.findColumnIndex = function(columnName) {
-    const columnIndex = this.column.indexOf(columnName) + 1;
-    if (columnIndex) return columnIndex;
-    else throw new Error(
-      `Column "${columnName}" cannot be found.`
-    );
-  };
-
-  DataObject.prototype.setColumn = function(columnName) {
-    const columnIndex = this.findColumnIndex(columnName);
-    this.columnName = columnName;
-    this.columnIndex = columnIndex;
+  DataObject.prototype.log = function(val) {
+    console.log(val, this);
     return this;
   };
 
-  DataObject.prototype.getColumnIndex = function() {
-    this.require('columnIndex');
-    return this.columnIndex - 1;
+  DataObject.prototype.getColumnIndex = function(columnName) {
+    const columnIndex = this.column.indexOf(columnName);
+    if (!(columnIndex+1)) throw new RangeError(
+      `There is no column with name "${columnName}".`
+    );
+    return columnIndex;
   };
 
-  DataObject.prototype.getColumnName = function() {
-    this.require('columnName');
-    return this.columnName;
-  }
-
-  DataObject.prototype.filter = function(val) {
-    const columnIndex = this.getColumnIndex();
+  DataObject.prototype.filter = function(columnName, keyword) {
+    const columnIndex = this.getColumnIndex(columnName);
     this.data = this.data.filter(row =>
-      row[columnIndex] == val
+      row[columnIndex] == keyword
     );
     return this;
   };
 
-  DataObject.prototype.filterOut = function(val) {
-    const columnIndex = this.getColumnIndex();
+  DataObject.prototype.filterOut = function(columnName, keyword) {
+    const columnIndex = this.getColumnIndex(columnName);
     this.data = this.data.filter(row =>
-      row[columnIndex] != val
+      row[columnIndex] != keyword
     );
     return this;
   };
 
-  DataObject.prototype.search = function(val) {
-    const columnIndex = this.getColumnIndex();
-    const regex = new RegExp(`(${val.trim().replace(/\s+/g, '|')})`, 'g');
+  DataObject.prototype.filterArray = function(columnName, keyword) {
+    const columnIndex = this.getColumnIndex(columnName);
+    this.data = this.data.filter(row =>
+      row[columnIndex].includes(keyword)
+    );
+    return this;
+  };
+
+  DataObject.prototype.search = function(columnName, keywords) {
+
+    const columnIndex = this.getColumnIndex(columnName);
+    const regexArr = keywords
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .log('Keywords')
+      .map(keyword => new RegExp(keyword, 'g'));
+
     this.data = this.data
-      .reduce((acc, row) => {
-        const matchArr = row[columnIndex].match(regex);
-        return (matchArr)
-          ? acc.concat([[ matchArr.length, row ]])
-          : acc;
+      .reduce((dataRanking, row) => {
+      
+        const matchScore = regexArr
+          // Give 1 score for each matched keyword found.
+          .reduce((scoreArr, regex, index) => {
+            const matchResult = row[columnIndex].match(regex);
+            if (matchResult)
+              scoreArr[index] += matchResult.length;
+            return scoreArr;
+          }, Array(regexArr.length).fill(0))
+          // Give 10 bonus score for each keyword found.
+          .map(score => (score) ? score + 10 : score)
+          .log('Search ranking score for each keyword.')
+          .reduce((sum, score) => sum + score, 0);
+          
+        return (matchScore)
+          ? dataRanking.concat([[ matchScore, row ]])
+          : dataRanking;
+          
       }, [])
       .sort((a, b) => b[0] - a[0])
+      .log('Founded records sorted with sum of ranking score.')
       .map(row => row[1]);
+      
+    return this;
+    
+  };
+  
+  DataObject.prototype.sort = function(columnsObj={หมวด: false}) {
+    const columnsArr = Object.keys(columnsObj).map(
+      columnName => [columnName, this.getColumnIndex(columnName)]
+    );
+    this.data = this.data.sort((a, b) => {
+      return columnsArr.reduce((position, columnArr) => {
+        const [columnName, columnIndex] = columnArr;
+        const isDESC = columnsObj[columnName];
+        return position || (isDESC)
+          ? b[columnIndex] - a[columnIndex]
+          : a[columnIndex] - b[columnIndex];
+      }, 0);
+    });
     return this;
   };
 
-  DataObject.prototype.filterArray = function(val) {
-    const columnIndex = this.getColumnIndex();
-    this.data = this.data.filter(row =>
-      row[columnIndex].includes(val)
-    );
-    return this;
-  };
-  
-  DataObject.prototype.sort = function(isDecrement) {
-    const columnIndex = this.getColumnIndex();
-    this.data = this.data.sort((a, b) =>
-      (isDecrement)
-      ? b[columnIndex] - a[columnIndex]
-      : a[columnIndex] - b[columnIndex]
-    );
-    return this;
-  };
-
-  DataObject.prototype.render = function(elem) {
-  
-    if (!elem || !elem.tagName)
-      throw new Error('Element is needed for render.');
+  DataObject.prototype.render = function(elemId='', tableProps={}) {
 
     const table = document.createElement('table');
-    table.id = 'data-table';
-    table.border = 1;
+    Object.keys(tableProps).forEach(
+      key => table[key] = tableProps[key]
+    );
     
     const thead = document.createElement('thead');
     const htr = document.createElement('tr');
@@ -123,8 +127,11 @@ function DataObject(column=[], data=[]) {
       const tr = document.createElement('tr');
       row.forEach(column => {
         const td = document.createElement('td');
-        if (Array.isArray(column)) {
-          td.innerHTML = `<ul>${column.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        if ( Array.isArray(column) ) {
+          const listsHTML = column
+            .map(item => `<li>${item}</li>`)
+            .join('');
+          td.innerHTML = `<ul>${listsHTML}</ul>`;
         } else {
           td.innerHTML = column;
         }
@@ -137,14 +144,18 @@ function DataObject(column=[], data=[]) {
 
     table.appendChild(thead);
     table.appendChild(tbody);
-    elem.textContent = '';
-    elem.appendChild(table);
-    return this;
+  
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      elem.textContent = '';
+      elem.appendChild(table);
+      return this;
+    } else {
+      return table;
+    }
 
   };
 
-function createDataObject(column, data) {
+export default (column, data) => {
   return new DataObject(column, data);
 }
-
-export default createDataObject;
