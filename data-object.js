@@ -13,8 +13,8 @@ function DataObject(column=[], data=[]) {
     });
   };
 
-  DataObject.prototype.log = function(val) {
-    console.log(val, this);
+  DataObject.prototype.log = function(...args) {
+    console.log(this, ...args);
     return this;
   };
 
@@ -72,16 +72,16 @@ function DataObject(column=[], data=[]) {
             return scoreArr;
           }, Array(regexArr.length).fill(0))
           // Give 10 bonus score for each keyword found.
-          .map(score => (score) ? score + 10 : score)
+          .map(score => score ? score + 10 : score)
           .log('Search ranking score for each keyword.')
           .reduce((sum, score) => sum + score, 0);
           
-        return (matchScore)
+        return matchScore
           ? dataRanking.concat([[ matchScore, row ]])
           : dataRanking;
           
       }, [])
-      .sort((a, b) => b[0] - a[0])
+      .toSorted((a, b) => b[0] - a[0])
       .log('Founded records sorted with sum of ranking score.')
       .map(row => row[1]);
       
@@ -93,13 +93,13 @@ function DataObject(column=[], data=[]) {
     const columnsArr = Object.keys(columnsObj).map(
       columnName => [columnName, this.getColumnIndex(columnName)]
     );
-    this.data = this.data.sort((a, b) => {
+    this.data = this.data.toSorted((a, b) => {
       return columnsArr.reduce((position, columnArr) => {
         const [columnName, columnIndex] = columnArr;
         const isDESC =
           (columnsObj[columnName].toUpperCase() === 'DESC')
           ? true : false;
-        return position || (isDESC)
+        return position || isDESC
           ? b[columnIndex] - a[columnIndex]
           : a[columnIndex] - b[columnIndex];
       }, 0);

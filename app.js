@@ -1,7 +1,7 @@
 import { column, data } from './data.js';
 import createDataObject from './data-object.js';
 
-var $dataObj;
+let $dataObj;
 
 (function init(param) {
   
