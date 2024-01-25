@@ -3,7 +3,7 @@
 <meta charset="utf-8" />
 <title>กรธ.60 - Data Query</title>
 <meta name="description" content="หน้าจอดึงข้อมูลกรธ.60" />
-<link href="main.css?v=0.0.3" rel="stylesheet" />
+<link href="main.css?v=0.1.0" rel="stylesheet" />
 </head>
 <body>
 
@@ -15,30 +15,37 @@
     <h3>Query Editor</h3>
     <p>
       Sample query - [
-      <a id="query-main" href="#main">รธน.60</a> |
-      <a id="query-draft" href="#draft">กรธ.60</a> ]
+          <a id="query-filter" class="query-sample" href="#filter">Filter</a> 
+        | <a id="query-filterOut" class="query-sample" href="#filterOut">Filter Out</a> 
+        | <a id="query-filterArray" class="query-sample" href="#filterArray">Filter Array</a> 
+        | <a id="query-search" class="query-sample" href="#search">Search</a> 
+        | <a id="query-sort" class="query-sample" href="#sort">Sort</a>
+        | <a id="query-reverse" class="query-sample" href="#reverse">Reverse</a>
+        | <a id="query-append" class="query-sample" href="#append">Append</a>
+        | <a id="query-prepend" class="query-sample" href="#prepend">Prepend</a>
+        | <a id="query-log" class="query-sample" href="#log">Log (For dev usage)</a>
+      ]
     </p>
-    <textarea id="query-editor">createDataObject(column.main, data.main)
+    <textarea id="query-editor">createDataObject(data.con)
   .render(
     'data-section',
     { id: 'data-table', border: 1 }
-  );
-  </textarea>
+  );</textarea>
     <textarea id="query-result"></textarea>
     <button id="query-submit">Query</button>
+    <button id="query-copy">Copy</button>
+    <button id="result-copy">Copy</button>
   </section>
   <section id="data-section"></section>
-  <aside>
+  <nav>
     <p><button id="btt">Back to top</button></p>
-  </aside>
+  </nav>
 </main>
 
-<!-- Only use during development, will be removed later. -->
-<script src="array-log.js"></script>
-
-<script type="module" src="data.js?v=0.0.3"></script>
-<script type="module" src="data-object.js?v=0.0.3"></script>
-<script type="module" src="app.js?v=0.0.3"></script>
+<script src="array-log.js?v=0.1.0"></script>
+<script type="module" src="data.js?v=0.1.0"></script>
+<script type="module" src="data-object.js?v=0.1.0"></script>
+<script type="module" src="app.js?v=0.1.0"></script>
 
 </body>
 </html>

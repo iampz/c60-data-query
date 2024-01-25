@@ -13,12 +13,6 @@ th {
   z-index: 2;
 }
   
-aside {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-}
-
 p {
   margin: 10px 0;
 }
@@ -37,9 +31,42 @@ button {
   height: 150px;
 }
 
+#query-copy {
+  margin-left: 7px;
+}
+
+#result-copy {
+  position: absolute;
+  left: 49.5%;
+}
+
+#btt {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  opacity: .6;
+  animation-name: bttOut;
+  animation-duration: .7s;
+}
+  @keyframes bttOut {
+    from { opacity: 1; }
+    to { opacity: .6; }
+  }
+  @keyframes bttHover {
+    from { opacity: .6; }
+    to { opacity: 1; }
+  }
+  #btt:hover {
+    opacity: 1;
+    animation-name: bttHover;
+    animation-duration: .7s;
+  }
+
 #data-section {
   margin-top: 20px;
-  padding-bottom: 60px;
+  padding-bottom: 65px;
 }
   
 #data-table {
@@ -69,5 +96,9 @@ button {
   }  
   #data-table ul {
     margin: 0 0 0 1em;
+    padding: 0;
+  }
+  #data-table li+li {
+    margin-top: 10px;
     padding: 0;
   }
