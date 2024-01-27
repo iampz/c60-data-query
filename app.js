@@ -2,90 +2,74 @@ import data from './data.js';
 import createDataObject from './data-object.js';
 
 let $dataObj;
+const defaultTable = { id: 'data-table', border: 1 }
 
 const queries = {
+  
 'filter':
-`createDataObject(data.con)
-  .filter('หมวด', 16)
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+`createDataObject(data)
+  .filter('หมวด', 1)
+  .render('data-section', defaultTable);`,
+
 'filterOut':
-`createDataObject(data.con)
+`createDataObject(data)
+  .filterOut('หมวด', 0)
   .filterOut('หมวด', 1)
-  .filterOut('หมวด', 2)
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+
 'filterArray':
-`createDataObject(data.doc)
+`createDataObject(data)
   .filterArray('ผู้อภิปราย', 'นายอัชพร จารุจินดา')
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'search':
-`createDataObject(data.doc)
+`createDataObject(data)
   .search('ประเด็นการพิจารณา', 'ศาลรัฐธรรมนูญ นิติธรรม รัฐสภา')
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'sort':
-`createDataObject(data.con)
+`createDataObject(data)
+  .filter('หมวด', 1)
   .sort({
     หมวด: 'ASC',
     มาตรา: 'DESC'
   })
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'reverse':
-`createDataObject(data.con)
+`createDataObject(data)
   .reverse()
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'append':
-`createDataObject(data.con)
+`createDataObject(data)
   .filter('มาตรา', 2)
   .append(
-    createDataObject(data.con)
+    createDataObject(data)
       .filter('มาตรา', 5)
   )
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'prepend':
-`createDataObject(data.con)
+`createDataObject(data)
   .filter('มาตรา', 2)
   .prepend(
-    createDataObject(data.con)
+    createDataObject(data)
       .filter('มาตรา', 5)
   )
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );`,
+  .render('data-section', defaultTable);`,
+  
 'log':
 `// Data object log during chain.
-createDataObject(data.con)
-  .filter('หมวด', 7)
+createDataObject(data)
+  .filter('หมวด',  'บทเฉพาะกาล')
   .log('%c $dataObj log -> ', 'color: lime; background: black; ')
-  .filter('ส่วน', 3)
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );
+  .filter('มาตรา', 274)
+  .render('data-section', defaultTable);
   
 // Array log during chain
 $dataObj
-  .data  // get array of objects
+  .valueOf()  // get array of objects
   .toReversed()
   .log('%c Native array log -> ', 'color: lime; background: black; ')
   .join('\\n');
@@ -96,10 +80,25 @@ console.log(
   'color: lime; background: black; ',
   $dataObj+'');
 
+window.$debug = $dataObj
+
 /**
  * Open console to see logs.
- **/
-`
+ * Use $debug variable in console for further testing.
+ **/`,
+  
+'constitution':
+`createDataObject(data);
+result.value = JSON.stringify(
+  $dataObj.getConstitution(112)
+);`,
+  
+'minutes':
+`createDataObject(data)
+result.value = JSON.stringify(
+  $dataObj.getMinutes(112)
+);`,
+ 
 };
 
 const editor = document.getElementById('query-editor');
@@ -127,7 +126,11 @@ querySampleIds.forEach(id => {
 querySubmit.addEventListener('click', evt => {
   const query = `$dataObj = ${editor.value}`;
   eval(query);
-  result.value = JSON.stringify($dataObj.data);
+  if ( query.search(/\.render\(/g) + 1 ) {
+    result.value = JSON.stringify($dataObj.data);
+  } else {
+    document.getElementById('data-table').remove();
+  }
   editor.focus();
   editor.selectionStart = editor.value.length;
   return evt;
@@ -139,7 +142,7 @@ queryCopy.addEventListener('click', evt => {
   document.execCommand('copy');
 });
 
-// copy JSON
+// copy json
 resultCopy.addEventListener('click', evt => {
   result.select();
   document.execCommand('copy');
@@ -156,5 +159,3 @@ document
       .scrollIntoView({ behavior: 'smooth', block: 'start' });
     return evt;
 });
-
-querySubmit.click();

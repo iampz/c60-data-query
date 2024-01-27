@@ -21,7 +21,7 @@
   <section id="app-section">
     <h3>Sample Queries</h3>
     <p>
-      Basic - [
+      Data object functions - [
           <a id="query-filter" class="query-sample" href="#filter">Filter</a> 
         | <a id="query-filterOut" class="query-sample" href="#filterOut">Filter Out</a> 
         | <a id="query-filterArray" class="query-sample" href="#filterArray">Filter Array</a> 
@@ -30,17 +30,16 @@
         | <a id="query-reverse" class="query-sample" href="#reverse">Reverse</a>
         | <a id="query-append" class="query-sample" href="#append">Append</a>
         | <a id="query-prepend" class="query-sample" href="#prepend">Prepend</a>
-        | <a id="query-log" class="query-sample" href="#log">Log (For dev usage)</a>
       ]
     </p>
     <p>
-      Use Cases - TODO: will be implemented later.
+      Utility functions - [
+          <a id="query-constitution" class="query-sample" href="#constitution">getConstitution</a>
+        | <a id="query-minutes" class="query-sample" href="#minutes">getMinutes</a>
+        | <a id="query-log" class="query-sample" href="#log">Log (For dev usage)</a>
+      ]
     </p>
-    <textarea id="query-editor">createDataObject(data.doc)
-  .render(
-    'data-section',
-    { id: 'data-table', border: 1 }
-  );</textarea>
+    <textarea id="query-editor"></textarea>
     <textarea id="query-result"></textarea>
     <button id="query-submit">Query</button>
     <button id="query-copy">Copy</button>

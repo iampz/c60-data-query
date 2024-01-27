@@ -1,17 +1,14 @@
-function DataObject(data=[]) {
-  if ( !Array.isArray(data)
-    || !data.length
-    || !data.every(item => item.constructor.name === 'Object')
-  ) throw new TypeError('Data should be array of objects.');
+function DataObject(data) {
   this.data = data;
-  this.column = Object.keys(data[0]);
+  this.column = Object.keys(this.data[0]);
 }
 
+  DataObject.prototype.valueOf = function() {
+    return this.data;
+  };
+
   DataObject.prototype.toString = function() {
-    return JSON.stringify({
-      column: this.column
-    , data: this.data
-    });
+    return JSON.stringify(this.valueOf());
   };
 
   DataObject.prototype.log = function(...args) {
@@ -114,6 +111,15 @@ function DataObject(data=[]) {
     return this;
   };
   
+  DataObject.prototype.getConstitution = function(article) {
+    return DataObject.constitution
+      .filter(con => con['มาตรา'] == article)[0];
+  };
+  
+  DataObject.prototype.getMinutes = function(id) {
+    return DataObject.minutes[0][id];
+  };
+
   DataObject.prototype.render = function(elemId='', tableProps={}) {
 
     const table = document.createElement('table');
@@ -166,5 +172,8 @@ function DataObject(data=[]) {
   };
 
 export default function createDataObject(data) {
-  return new DataObject(data);
+  const obj = Object.assign({}, data);
+  DataObject.constitution = obj.con;
+  DataObject.minutes = obj.min;
+  return new DataObject(obj.doc);
 }
