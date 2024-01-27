@@ -113,7 +113,7 @@ function DataObject(data=[]) {
     this.data = dataObj.data.concat(this.data);
     return this;
   };
-
+  
   DataObject.prototype.render = function(elemId='', tableProps={}) {
 
     const table = document.createElement('table');
@@ -165,6 +165,6 @@ function DataObject(data=[]) {
 
   };
 
-export default (data) => {
+export default function createDataObject(data) {
   return new DataObject(data);
 }
