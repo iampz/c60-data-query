@@ -22,7 +22,7 @@ createDataObject(data) - Create a data object.
 
 .prepend(dataObj) - Concat another data at the start.
 
-### Utility functions
+### UI & Utility functions
 
 .getConstitution(article) - Get constitution data with article passed.
 
