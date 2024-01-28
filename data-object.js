@@ -1,7 +1,10 @@
 function DataObject(data) {
+  const minutes = Object.assign({}, data.min[0]);
+  Object.keys(minutes).forEach(key => minutes[key]['id'] = key);
+  minutes.length = parseInt( Object.keys(minutes).at(-1) ) + 1;
   this.data = data.doc;
   this.constitution = data.con;
-  this.minutes = data.min[0];
+  this.minutes = Array.from(minutes).filter(Boolean);
 }
 
   DataObject.prototype.valueOf = function() {
@@ -129,13 +132,18 @@ function DataObject(data) {
   // UI & Utility functions
   
   DataObject.prototype.getConstitution = function(article) {
-    this.data = this.constitution
-      .filter(con => con['มาตรา'] == article);
+    this.data = !article
+      ? this.constitution
+      : this.constitution
+        .filter(con => con['มาตรา'] == article);
     return this;
   };
   
   DataObject.prototype.getMinutes = function(id) {
-    this.data = [ this.minutes[id] ];
+    this.data = !id
+      ? this.minutes
+      : this.minutes
+        .filter(row => row.id == id);
     return this;
   };
 
@@ -184,55 +192,64 @@ function DataObject(data) {
 
   DataObject.prototype.render = function(elemId='', tableProps={}) {
   
-    const columns = Object.keys(this.data[0]);
-
-    const table = document.createElement('table');
-    Object.keys(tableProps).forEach(
-      key => table[key] = tableProps[key]
-    );
+    if (this.data.length) {
     
-    const thead = document.createElement('thead');
-    const htr = document.createElement('tr');
-    columns.forEach(columnName => {
-      htr
-        .appendChild(document.createElement('th'))
-        .append(columnName);
-      return columnName;
-    });
-    thead.append(htr);
+      const columns = Object.keys(this.data[0]);
 
-    const tbody = document.createElement('tbody');
-    this.data.forEach(row => {
-      const tr = document.createElement('tr');
+      const table = document.createElement('table');
+      Object.keys(tableProps).forEach(
+        key => table[key] = tableProps[key]
+      );
+      
+      const thead = document.createElement('thead');
+      const htr = document.createElement('tr');
       columns.forEach(columnName => {
-        const td = document.createElement('td');
-        const column = row[columnName];
-        if ( Array.isArray(column) ) {
-          const listsHTML = column
-            .map(item => `<li>${item}</li>`)
-            .join('');
-          td.innerHTML = `<ul>${listsHTML}</ul>`;
-        } else {
-          td.innerHTML = column;
-        }
-        tr.append(td);
-        return column;
+        htr
+          .appendChild(document.createElement('th'))
+          .append(columnName);
+        return columnName;
       });
-      tbody.append(tr);
-      return row;
-    });
+      thead.append(htr);
 
-    table.append(thead, tbody);
-  
-    const elem = document.getElementById(elemId);
-    if (elem) {
-      elem.textContent = '';
-      elem.append(table);
-      return this;
-    } else {
-      return table;
+      const tbody = document.createElement('tbody');
+      this.data.forEach(row => {
+        const tr = document.createElement('tr');
+        columns.forEach(columnName => {
+          const td = document.createElement('td');
+          const column = row[columnName];
+          if ( Array.isArray(column) ) {
+            const listsHTML = column
+              .map(item => `<li>${item}</li>`)
+              .join('');
+            td.innerHTML = `<ul>${listsHTML}</ul>`;
+          } else {
+            td.innerHTML = column;
+          }
+          tr.append(td);
+          return column;
+        });
+        tbody.append(tr);
+        return row;
+      });
+
+      table.append(thead, tbody);
+    
+      const elem = document.getElementById(elemId);
+      if (elem) {
+        elem.textContent = '';
+        elem.append(table);
+        return this;
+      } else {
+        return table;
+      }
+      
+    } else if (elemId) {
+      const elem = document.getElementById(elemId);
+      if (elem) elem.textContent = '';
     }
-
+    
+    return this;
+    
   };
 
 export default function createDataObject(data) {
