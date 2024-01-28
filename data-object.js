@@ -1,6 +1,7 @@
 function DataObject(data) {
-  this.data = data;
-  this.column = Object.keys(this.data[0]);
+  this.data = data.doc;
+  this.constitution = data.con;
+  this.minutes = data.min[0];
 }
 
   DataObject.prototype.valueOf = function() {
@@ -15,10 +16,23 @@ function DataObject(data) {
     console.log(...args, this);
     return this;
   };
+  
+  
+  // Data object functions
 
   DataObject.prototype.filter = function(columnName, keyword) {
     this.data = this.data.filter(row =>
       row[columnName] == keyword
+    );
+    return this;
+  };
+
+  DataObject.prototype.filters = function(columnName, keywords) {
+    this.data = this.data.filter(row =>
+      keywords
+        .map(keyword => keyword + '')
+        .indexOf(row[columnName])
+        + 1
     );
     return this;
   };
@@ -111,16 +125,66 @@ function DataObject(data) {
     return this;
   };
   
+  
+  // UI & Utility functions
+  
   DataObject.prototype.getConstitution = function(article) {
-    return DataObject.constitution
-      .filter(con => con['มาตรา'] == article)[0];
+    this.data = this.constitution
+      .filter(con => con['มาตรา'] == article);
+    return this;
   };
   
   DataObject.prototype.getMinutes = function(id) {
-    return DataObject.minutes[0][id];
+    this.data = [ this.minutes[id] ];
+    return this;
+  };
+
+  DataObject.prototype.list = function(columnName) {
+    const dataObj = this.data.reduce((newObj, row) => {
+      if (!newObj[row[columnName]]) newObj[row[columnName]] = 1;
+      else newObj[row[columnName]] += 1;
+      return newObj;
+    }, {});
+    const keys = Object.keys(dataObj);
+    const vals = Object.values(dataObj);
+    this.data = keys
+      .map((key, index) => {
+        const obj = {};
+        obj[columnName] = key;
+        obj.count = vals[index];
+        return obj;
+      })
+      .sort((a, b) => b.count - a.count);
+    return this;
+  };
+  
+  DataObject.prototype.listPanelists = function() {
+    const dataObj = this.data.reduce((newObj, row) => {
+      const panelists = row['ผู้อภิปราย'];
+      if (panelists.length) {
+        panelists.forEach(panelist => {
+          if (!newObj[panelist]) newObj[panelist] = 1;
+          else newObj[panelist] += 1;
+        });
+      }
+      return newObj;
+    }, {});
+    const keys = Object.keys(dataObj);
+    const vals = Object.values(dataObj);
+    this.data = keys
+      .map((key, index) => {
+        return {
+          'ผู้อภิปราย': key,
+          'count': vals[index],
+        };
+      })
+      .sort((a, b) => b.count - a.count);
+    return this;
   };
 
   DataObject.prototype.render = function(elemId='', tableProps={}) {
+  
+    const columns = Object.keys(this.data[0]);
 
     const table = document.createElement('table');
     Object.keys(tableProps).forEach(
@@ -129,7 +193,7 @@ function DataObject(data) {
     
     const thead = document.createElement('thead');
     const htr = document.createElement('tr');
-    this.column.forEach(columnName => {
+    columns.forEach(columnName => {
       htr
         .appendChild(document.createElement('th'))
         .append(columnName);
@@ -140,7 +204,7 @@ function DataObject(data) {
     const tbody = document.createElement('tbody');
     this.data.forEach(row => {
       const tr = document.createElement('tr');
-      this.column.forEach(columnName => {
+      columns.forEach(columnName => {
         const td = document.createElement('td');
         const column = row[columnName];
         if ( Array.isArray(column) ) {
@@ -173,7 +237,5 @@ function DataObject(data) {
 
 export default function createDataObject(data) {
   const obj = Object.assign({}, data);
-  DataObject.constitution = obj.con;
-  DataObject.minutes = obj.min;
-  return new DataObject(obj.doc);
+  return new DataObject(obj);
 }

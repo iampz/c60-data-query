@@ -2,13 +2,15 @@
 
 ### Data object functions
 
-createDataObject(data) - Create data object. 
+createDataObject(data) - Create a data object. 
 
-.filter(columnName, keyword) - Selected filtered rows by exact value.
+.filter(columnName, keyword) - Selected filtered rows by single keyword.
 
-.filterOut(columnName, keyword) - Remove filtered rows by exact value.
+.filters(columnName, keywords) - Selected filtered rows by multiple keywords.
 
-.filterArray(columnName, keyword) - Filter rows which have seach value in array item.
+.filterOut(columnName, keyword) - Remove filtered rows by single keyword.
+
+.filterArray(columnName, keyword) - Filter rows which have seach keyword in array item.
 
 .search(columnName, keywords) - Partial search and order by ranking.
 
@@ -25,5 +27,9 @@ createDataObject(data) - Create data object.
 .getConstitution(article) - Get constitution data with article passed.
 
 .getMinutes(id) - Get minutes data with id passed.
+
+.list() - Get all chapters with count.
+
+.listPanelists() - Get all panelists with count.
 
 .render(elemId, tableProps{}) - Render data table.

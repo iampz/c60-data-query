@@ -11,6 +11,11 @@ const queries = {
   .filter('หมวด', 1)
   .render('data-section', defaultTable);`,
 
+'filters':
+`createDataObject(data)
+  .filters('มาตรา', [2, 3])
+  .render('data-section', defaultTable);`,
+
 'filterOut':
 `createDataObject(data)
   .filterOut('หมวด', 0)
@@ -87,18 +92,32 @@ window.$debug = $dataObj
  * Use $debug variable in console for further testing.
  **/`,
   
-'constitution':
-`createDataObject(data);
-result.value = JSON.stringify(
-  $dataObj.getConstitution(112)
-);`,
-  
-'minutes':
+'getConstitution':
 `createDataObject(data)
-result.value = JSON.stringify(
-  $dataObj.getMinutes(112)
-);`,
- 
+  .getConstitution(112)
+  .render('data-section', defaultTable);`,
+  
+'getMinutes':
+`createDataObject(data)
+  .getMinutes(112)
+  .render('data-section', defaultTable);`,
+
+'list1':
+`createDataObject(data)
+  .list('หมวด')
+  .render('data-section', defaultTable);`,
+
+'list2':
+`createDataObject(data)
+  .filters('หมวด', ['คำปรารภ', 'บทเฉพาะกาล'])
+  .list('มาตรา')
+  .render('data-section', defaultTable);`,
+
+'listPanelists':
+`createDataObject(data)
+  .listPanelists()
+  .render('data-section', defaultTable);`,
+
 };
 
 const editor = document.getElementById('query-editor');
@@ -126,11 +145,7 @@ querySampleIds.forEach(id => {
 querySubmit.addEventListener('click', evt => {
   const query = `$dataObj = ${editor.value}`;
   eval(query);
-  if ( query.search(/\.render\(/g) + 1 ) {
-    result.value = JSON.stringify($dataObj.data);
-  } else {
-    document.getElementById('data-table').remove();
-  }
+  result.value = JSON.stringify($dataObj.data);
   editor.focus();
   editor.selectionStart = editor.value.length;
   return evt;
