@@ -1,5 +1,5 @@
 async function fetchJSON(title) {
-  const response = await fetch(`./data/${title}.json`);
+  const response = await fetch(`./data/${title}.json?v=0.2.0`);
   const json = await response.json();
   return json;
 }
