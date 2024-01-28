@@ -24,9 +24,9 @@ createDataObject(data) - Create a data object.
 
 ### UI & Utility functions
 
-.getConstitution(article) - Get constitution data with article passed.
+.getConstitution(article) - Get constitution data (call with parameter for filter).
 
-.getMinutes(id) - Get minutes data with id passed.
+.getMinutes(id) - Get minutes data (call with parameter for filter).
 
 .list() - Get all chapters with count.
 
