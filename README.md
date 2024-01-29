@@ -1,7 +1,6 @@
 # [กรธ.60 - Data Query](https://iampz.github.io/c60-data-query/)
 
 ### Data object functions
-
 - createDataObject(data) - Create a data object. 
 - .filter(columnName, keyword) - Selected filtered rows by single keyword.
 - .filters(columnName, keywords) - Selected filtered rows by multiple keywords.
@@ -12,9 +11,8 @@
 - .reverse() - Reverse data array.
 - .append(dataObj) - Concat another data at the end.
 - .prepend(dataObj) - Concat another data at the start.
-
+- 
 ### UI & Utility functions
-
 - .getConstitution(article) - Get constitution data (call with parameter for filter).
 - .getMinutes(id) - Get minutes data (call with parameter for filter).
 - .list() - Get all chapters with count.
