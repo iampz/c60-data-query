@@ -19,7 +19,9 @@ function getJSON(titleArr) {
  **/
 const data = {
   doc: await getJSON([
-    'chapter-01', 'chapter-16', 'transitory-provisions'
+    'chapter-01', 'chapter-13',
+    'chapter-14', 'chapter-15',
+    'chapter-16', 'transitory-provisions'
   ]),
   con: await getJSON(['constitution']),
   min: await getJSON(['minutes']),
