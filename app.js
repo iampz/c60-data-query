@@ -1,5 +1,5 @@
-import data from './data.js?v=0.2.0';
-import createDataObject from './data-object.js?v=0.2.0';
+import data from './data.js?v=0.2.1';
+import createDataObject from './data-object.js?v=0.2.1';
 
 let $dataObj;
 const defaultTable = { id: 'data-table', border: 1 }
@@ -143,9 +143,11 @@ querySampleIds.forEach(id => {
 
 // run query
 querySubmit.addEventListener('click', evt => {
-  const query = `$dataObj = ${editor.value}`;
-  eval(query);
-  result.value = JSON.stringify($dataObj.data);
+  if (editor.value) {
+    const query = `$dataObj = ${editor.value}`;
+    eval(query);
+    result.value = JSON.stringify($dataObj.data);
+  }
   editor.focus();
   editor.selectionStart = editor.value.length;
   return evt;
