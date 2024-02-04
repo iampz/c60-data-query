@@ -1,4 +1,4 @@
-import data from './data.js?v=0.2.2';
+import data from './data.js?v=0.2.3';
 import createDataObject from './data-object.js?v=0.2.1';
 
 let $dataObj;
@@ -11,9 +11,17 @@ const queries = {
   .filter('หมวด', 1)
   .render('data-section', defaultTable);`,
 
-'filters':
+'multiFilter':
 `createDataObject(data)
-  .filters('มาตรา', [2, 3])
+  .multiFilter([
+    // criteria
+    { มาตรา: 2},
+    { มาตรา: 3},
+  ], [
+    // except
+    { ประเด็นการพิจารณา: ''},
+    { ประชุมครั้งที่: '5'},
+  ])
   .render('data-section', defaultTable);`,
 
 'filterOut':

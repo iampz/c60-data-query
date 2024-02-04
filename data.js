@@ -1,5 +1,5 @@
 async function fetchJSON(title) {
-  const response = await fetch(`./data/${title}.json?v=0.2.0`);
+  const response = await fetch(`./data/${title}.json?v=0.2.1`);
   const json = await response.json();
   return json;
 }
@@ -19,9 +19,10 @@ function getJSON(titleArr) {
  **/
 const data = {
   doc: await getJSON([
-    'chapter-01', 'chapter-13',
-    'chapter-14', 'chapter-15',
-    'chapter-16', 'transitory-provisions'
+    'chapter-01', 'chapter-12',
+    'chapter-13', 'chapter-14',
+    'chapter-15', 'chapter-16',
+    'transitory-provisions'
   ]),
   con: await getJSON(['constitution']),
   min: await getJSON(['minutes']),

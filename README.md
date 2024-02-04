@@ -2,11 +2,11 @@
 
 ### Data object functions
 - createDataObject(data) - Create a data object. 
-- .filter(columnName, keyword) - Selected filtered rows by single keyword.
-- .filters(columnName, keywords) - Selected filtered rows by multiple keywords.
+- .filter(columnName, keyword) - Get filtered rows by single keyword.
+- .multiFilter(criteria, except) - Get filtered rows by multiple criteria/exception.
 - .filterOut(columnName, keyword) - Remove filtered rows by single keyword.
-- .filterArray(columnName, keyword) - Filter rows which have seach keyword in array item.
-- .search(columnName, keywords) - Partial search and order by ranking.
+- .filterArray(columnName, keyword) - Get filtered rows contained keyword in array.
+- .search(columnName, keywords) - Partial search ordered by ranking.
 - .sort(columnsObj{columnName: ASC/DESC}) - Sort data by using selected column.
 - .reverse() - Reverse data array.
 - .append(dataObj) - Concat another data at the end.

@@ -30,13 +30,25 @@ function DataObject(data) {
     return this;
   };
 
-  DataObject.prototype.filters = function(columnName, keywords) {
-    this.data = this.data.filter(row =>
-      keywords
-        .map(keyword => keyword + '')
-        .indexOf(row[columnName])
-        + 1
-    );
+  DataObject.prototype.multiFilter = function(criteria=[], except=[]) {
+    if (criteria && criteria.length) {
+      this.data = this.data.filter((row, index) => {
+        return criteria.reduce((isRemain, criterion) => {
+          const columnName = Object.keys(criterion)[0];
+          const value = criterion[columnName];
+          return isRemain || (row[columnName] == value);
+        }, false);
+      });
+    }
+    if (except && except.length) {
+      this.data = this.data.filter((row, index) => {
+        return !except.reduce((isLeave, criterion) => {
+          const columnName = Object.keys(criterion)[0];
+          const value = criterion[columnName];
+          return isLeave || (row[columnName] == value);
+        }, false);
+      });
+    }
     return this;
   };
   
