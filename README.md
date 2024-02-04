@@ -11,7 +11,7 @@
 - .reverse() - Reverse data array.
 - .append(dataObj) - Concat another data at the end.
 - .prepend(dataObj) - Concat another data at the start.
-- 
+
 ### UI & Utility functions
 - .getConstitution(article) - Get constitution data (call with parameter for filter).
 - .getMinutes(id) - Get minutes data (call with parameter for filter).
