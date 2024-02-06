@@ -117,7 +117,7 @@ window.$debug = $dataObj
 
 'list2':
 `createDataObject(data)
-  .filters('หมวด', ['คำปรารภ', 'บทเฉพาะกาล'])
+  .filter('หมวด', 'บทเฉพาะกาล')
   .list('มาตรา')
   .render('data-section', defaultTable);`,
 
