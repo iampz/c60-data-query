@@ -1,5 +1,5 @@
 async function fetchJSON(title) {
-  const env = (location.hostname === '127.0.0.1')
+  const env = (window.location.hostname === '127.0.0.1')
     ? 'dev' : 'prod';
   const path = {
     dev: './',
