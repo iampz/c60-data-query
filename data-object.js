@@ -36,7 +36,10 @@ function DataObject(data) {
         return criteria.reduce((isRemain, criterion) => {
           const columnName = Object.keys(criterion)[0];
           const value = criterion[columnName];
-          return isRemain || (row[columnName] == value);
+          return isRemain 
+            || (row[columnName] == value) 
+            || (Array.isArray(row[columnName]) 
+                && row[columnName].includes(value));
         }, false);
       });
     }
@@ -45,7 +48,10 @@ function DataObject(data) {
         return !except.reduce((isLeave, criterion) => {
           const columnName = Object.keys(criterion)[0];
           const value = criterion[columnName];
-          return isLeave || (row[columnName] == value);
+          return isLeave 
+            || (row[columnName] == value)
+            || (Array.isArray(row[columnName]) 
+                && row[columnName].includes(value));
         }, false);
       });
     }
