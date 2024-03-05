@@ -6,7 +6,7 @@ async function fetchJSON(title) {
     prod: 'https://iampz.github.io/c60-data-query/',
   };
   const response = await fetch(
-    `${path[env]}data/${title}.json?v=0.2.5`
+    `${path[env]}data/${title}.json?v=0.2.6`
   );
   const json = await response.json();
   return json;
@@ -27,10 +27,14 @@ function getJSON(titleArr) {
  **/
 const data = {
   doc: await getJSON([
-    'chapter-01', 'chapter-10',
-    'chapter-11', 'chapter-12',
+    'chapter-01', 'chapter-02',
+    'chapter-03', 'chapter-04', 
+    'chapter-05', 'chapter-06',
+    'chapter-07', 'chapter-08', 
+    'chapter-09', 'chapter-10',
+    'chapter-11', 'chapter-12', 
     'chapter-13', 'chapter-14',
-    'chapter-15', 'chapter-16',
+    'chapter-15', 'chapter-16', 
     'transitory-provisions'
   ]),
   con: await getJSON(['constitution']),
