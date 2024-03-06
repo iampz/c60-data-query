@@ -73,7 +73,7 @@ function DataObject(data) {
   };
 
   DataObject.prototype.search = function(columnName, keywords) {
-
+    keywords = keywords.replace(/\\/g, '');
     const regexArr = keywords
       .trim()
       .replace(/\s+/g, ' ')
