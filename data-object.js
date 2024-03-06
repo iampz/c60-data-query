@@ -86,7 +86,7 @@ function DataObject(data) {
         const matchScore = regexArr
           // Give 1 score for each matched keyword found.
           .reduce((scoreArr, regex, index) => {
-            const matchResult = row[columnName].match(regex);
+            const matchResult = row[columnName].toString().match(regex);
             if (matchResult)
               scoreArr[index] += matchResult.length;
             return scoreArr;
