@@ -32,7 +32,7 @@ const queries = {
 
 'filterArray':
 `createDataObject(data)
-  .filterArray('ผู้อภิปราย', 'นายอัชพร จารุจินดา')
+  .filterArray('ผู้อภิปราย', 'นายชวน หลีกภัย')
   .render('data-section', defaultTable);`,
   
 'search':
