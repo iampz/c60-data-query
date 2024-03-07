@@ -8,7 +8,7 @@ const queries = {
   
 'filter':
 `createDataObject(data)
-  .filter('หมวด', 1)
+  .filter('หมวด', 16)
   .render('data-section', defaultTable);`,
 
 'multiFilter':
@@ -26,8 +26,8 @@ const queries = {
 
 'filterOut':
 `createDataObject(data)
-  .filterOut('หมวด', 0)
   .filterOut('หมวด', 1)
+  .filterOut('หมวด', 7)
   .render('data-section', defaultTable);`,
 
 'filterArray':
@@ -37,6 +37,7 @@ const queries = {
   
 'search':
 `createDataObject(data)
+  .filter('หมวด', 7)
   .search('ประเด็นการพิจารณา', 'ศาลรัฐธรรมนูญ นิติธรรม รัฐสภา')
   .render('data-section', defaultTable);`,
   
