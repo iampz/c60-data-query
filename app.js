@@ -1,5 +1,5 @@
-import data from './data.js?v=0.2.7';
-import createDataObject from './data-object.js?v=0.2.1';
+import data from './data.js?v=0.2.8';
+import createDataObject from './data-object.js?v=0.2.8';
 
 let $dataObj;
 const defaultTable = { id: 'data-table', border: 1 }

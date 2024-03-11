@@ -6,7 +6,7 @@ async function fetchJSON(title) {
     prod: 'https://iampz.github.io/c60-data-query/',
   };
   const response = await fetch(
-    `${path[env]}data/${title}.json?v=0.2.7`
+    `${path[env]}data/${title}.json?v=0.2.8`
   );
   const json = await response.json();
   return json;
