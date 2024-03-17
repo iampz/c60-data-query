@@ -1,12 +1,6 @@
 async function fetchJSON(title) {
-  const env = (window.location.hostname === '127.0.0.1')
-    ? 'dev' : 'prod';
-  const path = {
-    dev: './',
-    prod: 'https://iampz.github.io/c60-data-query/',
-  };
   const response = await fetch(
-    `${path[env]}data/${title}.json?v=0.2.8`
+    `./data/${title}.json?v=1.0.0`
   );
   const json = await response.json();
   return json;
