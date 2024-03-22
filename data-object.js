@@ -1,10 +1,14 @@
 function DataObject(data) {
+  
   const minutes = Object.assign({}, data.min[0]);
-  Object.keys(minutes).forEach(key => minutes[key]['id'] = key);
-  minutes.length = parseInt( Object.keys(minutes).at(-1) ) + 1;
+  const minutesKeys = Object.keys(minutes);
+  minutesKeys.forEach(key => minutes[key]['id'] = key);
+  minutes.length = parseInt( minutesKeys[minutesKeys.length-1] ) + 1;
+
   this.data = data.doc;
   this.constitution = data.con;
   this.minutes = Array.from(minutes).filter(Boolean);
+
 }
 
   DataObject.prototype.valueOf = function() {
@@ -100,7 +104,7 @@ function DataObject(data) {
           : dataRanking;
           
       }, [])
-      .toSorted((a, b) => b[0] - a[0])
+      .sort((a, b) => b[0] - a[0])
       .map(row => row[1]);
       
     return this;
@@ -110,7 +114,7 @@ function DataObject(data) {
   DataObject.prototype.sort = function(columnsObj={หมวด: 'ASC'}) {
     Object
       .keys(columnsObj)
-      .toReversed()
+      .reverse()
       .forEach(columnName => {
         const compareOptions = {
           numeric: true,
@@ -119,7 +123,7 @@ function DataObject(data) {
         const isDESC = (
           columnsObj[columnName].toUpperCase() === 'DESC'
         );
-        this.data = this.data.toSorted((a, b) => {
+        this.data = this.data.sort((a, b) => {
           const aCol = a[columnName];
           const bCol = b[columnName];
           return isDESC
@@ -132,7 +136,7 @@ function DataObject(data) {
   };
   
   DataObject.prototype.reverse = function() {
-    this.data = this.data.toReversed();
+    this.data = this.data.reverse();
     return this;
   };
   

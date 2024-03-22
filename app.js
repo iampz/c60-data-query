@@ -8,7 +8,7 @@ const queries = {
   
 'filter':
 `createDataObject(data)
-  .filter('หมวด', 16)
+  .filter('หมวด', 4)
   .render('data-section', defaultTable);`,
 
 'multiFilter':
@@ -26,8 +26,8 @@ const queries = {
 
 'filterOut':
 `createDataObject(data)
-  .filterOut('หมวด', 1)
-  .filterOut('หมวด', 7)
+  .filter('หมวด', 2)
+  .filterOut('มาตรา', 6)
   .render('data-section', defaultTable);`,
 
 'filterArray':
@@ -37,8 +37,7 @@ const queries = {
   
 'search':
 `createDataObject(data)
-  .filter('หมวด', 7)
-  .search('ประเด็นการพิจารณา', 'ศาลรัฐธรรมนูญ นิติธรรม รัฐสภา')
+  .search('ประเด็นการพิจารณา', 'หลากหลายทางเพศ ผิดธรรมชาติ')
   .render('data-section', defaultTable);`,
   
 'sort':
@@ -52,6 +51,7 @@ const queries = {
   
 'reverse':
 `createDataObject(data)
+  .filter('หมวด', 4)
   .reverse()
   .render('data-section', defaultTable);`,
   
@@ -103,11 +103,13 @@ window.$debug = $dataObj
   
 'getConstitution':
 `createDataObject(data)
+  \/\/ can be called without variable to get all sections
   .getConstitution(112)
   .render('data-section', defaultTable);`,
   
 'getMinutes':
 `createDataObject(data)
+  \/\/ can be called without variable to get all minutes
   .getMinutes(112)
   .render('data-section', defaultTable);`,
 
